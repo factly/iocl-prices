@@ -1,20 +1,49 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
-
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<app-topbar></app-topbar>
+<mat-card>
+    <mat-card-content>
+        <mat-card>
+            <mat-card-content>
+                <form>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <mat-form-field>
+                                    <input matInput [min]="minDate" [max]="startMaxDate" [formControl]="startDateControl" [matDatepicker]="startPicker" placeholder="From"
+                                        (dateInput)="changeStartDate($event)">
+                                    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #startPicker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-form-field>
+                                    <input matInput [min]="endMinDate" [max]="maxDate" [formControl]="endDateControl" [matDatepicker]="endPicker" placeholder="To"
+                                        (dateInput)="changeEndDate($event)">
+                                    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #endPicker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-checkbox name="Crude" [(ngModel)]="showCrude" (change)="handleCrude()">Crude&nbsp;</mat-checkbox>
+                                <mat-checkbox name="Petrol" [(ngModel)]="showFuel['Petrol']" (change)="handleFuel('Petrol')">Petrol&nbsp;</mat-checkbox>
+                                <mat-checkbox name="Diesel" [(ngModel)]="showFuel['Diesel']" (change)="handleFuel('Diesel')">Diesel</mat-checkbox>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-checkbox name="Mumbai" [(ngModel)]="showCity['Mumbai']" (change)="handleCity('Mumbai')">Mumbai&nbsp;</mat-checkbox>
+                                <mat-checkbox name="Delhi" [(ngModel)]="showCity['Delhi']" (change)="handleCity('Delhi')">Delhi&nbsp;</mat-checkbox><br>
+                                <mat-checkbox name="Koklata " [(ngModel)]="showCity['Kolkata']" (change)="handleCity('Kolkata')">Kolkata&nbsp;&nbsp;</mat-checkbox>
+                                <mat-checkbox name="Chennai" [(ngModel)]="showCity['Chennai']" (change)="handleCity('Chennai')">Chennai</mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </mat-card-content>
+        </mat-card>
+        <mat-card>
+            <mat-card-content>
+                <div [chart]="chart"></div>
+            </mat-card-content>
+        </mat-card>
+    </mat-card-content>
+</mat-card>
