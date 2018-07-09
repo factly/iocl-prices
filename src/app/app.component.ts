@@ -14,18 +14,18 @@ export class AppComponent implements OnInit {
   petrolData;
   dieselData;
   crudeData: any;
-  showCrude=false;
-  showPetrol=true;
-  showDiesel=false;
-  showCity={
-    "Mumbai":true,
-    "Chennai":true,
-    "Kolkata":true,
-    "Delhi":true
+  showCrude = false;
+  showPetrol = true;
+  showDiesel = false;
+  showCity = {
+    "Mumbai": true,
+    "Chennai": true,
+    "Kolkata": true,
+    "Delhi": true
   }
-  showFuel={
-    "Petrol":true,
-    "Diesel":false
+  showFuel = {
+    "Petrol": true,
+    "Diesel": false
   }
   minDate = new Date(2012, 4, 23);
   maxDate = new Date(2018, 5, 21);
@@ -51,10 +51,10 @@ export class AppComponent implements OnInit {
     },
     yAxis:
       {
-      title:{
-        text: 'Petrol Prices (Rupees/Litre)'
+        title: {
+          text: 'Petrol Prices (Rupees/Litre)'
+        }
       }
-    }
     ,
     legend: {
       enabled: false
@@ -91,24 +91,27 @@ export class AppComponent implements OnInit {
   }
   constructor(private getDataService: GetDataService) { }
   applyFilters() {
-    this.filteredData.crudeData = this.crudeData;
-    this.filteredData.petrolData= this.petrolData;
-    this.filteredData.dieselData= this.dieselData;
+    this.filteredData.crudeData = _.cloneDeep(this.crudeData);
+    this.filteredData.petrolData = _.cloneDeep(this.petrolData);
+    this.filteredData.dieselData = _.cloneDeep(this.dieselData);
+    console.log(this.petrolData)
+    debugger;
     this.applyStartDatefilters();
     this.applyEndDatefilters();
     this.reloadData();
   }
   applyStartDatefilters() {
-    let sDate = this.startDate
+    let sDate = this.startDate;
+    console.log(this.filteredData);
     this.filteredData.crudeData = _.filter(this.filteredData.crudeData, function (o) { return o[0] > sDate; });
-    this.filteredData.petrolData.chennai = _.filter(this.filteredData.petrolData.chennai, function (o) {  return o[0] > sDate; })
-    this.filteredData.petrolData.mumbai = _.filter(this.filteredData.petrolData.mumbai, function (o) {  return o[0] > sDate; })
-    this.filteredData.petrolData.delhi = _.filter(this.filteredData.petrolData.delhi, function (o) {  return o[0] > sDate; })
-    this.filteredData.petrolData.kolkata = _.filter(this.filteredData.petrolData.kolkata, function (o) {  return o[0] > sDate; })
-    this.filteredData.dieselData.chennai = _.filter(this.filteredData.dieselData.chennai, function (o) {  return o[0] > sDate; })
-    this.filteredData.dieselData.mumbai = _.filter(this.filteredData.dieselData.mumbai, function (o) {  return o[0] > sDate; })
-    this.filteredData.dieselData.delhi = _.filter(this.filteredData.dieselData.delhi, function (o) {  return o[0] > sDate; })
-    this.filteredData.dieselData.kolkata = _.filter(this.filteredData.dieselData.kolkata, function (o) {  return o[0] > sDate; })
+    this.filteredData.petrolData.chennai = _.filter(this.filteredData.petrolData.chennai, function (o) { return o[0] > sDate; })
+    this.filteredData.petrolData.mumbai = _.filter(this.filteredData.petrolData.mumbai, function (o) { return o[0] > sDate; })
+    this.filteredData.petrolData.delhi = _.filter(this.filteredData.petrolData.delhi, function (o) { return o[0] > sDate; })
+    this.filteredData.petrolData.kolkata = _.filter(this.filteredData.petrolData.kolkata, function (o) { return o[0] > sDate; })
+    this.filteredData.dieselData.chennai = _.filter(this.filteredData.dieselData.chennai, function (o) { return o[0] > sDate; })
+    this.filteredData.dieselData.mumbai = _.filter(this.filteredData.dieselData.mumbai, function (o) { return o[0] > sDate; })
+    this.filteredData.dieselData.delhi = _.filter(this.filteredData.dieselData.delhi, function (o) { return o[0] > sDate; })
+    this.filteredData.dieselData.kolkata = _.filter(this.filteredData.dieselData.kolkata, function (o) { return o[0] > sDate; })
 
     //console.log(this.filteredData);
   }
@@ -125,76 +128,77 @@ export class AppComponent implements OnInit {
     this.filteredData.dieselData.mumbai = _.filter(this.filteredData.dieselData.mumbai, function (o) { return o[0] <= eDate; })
   }
   reloadData() {
-    while(this.chart.ref.series.length>0)
+    while (this.chart.ref.series.length > 0)
       this.chart.removeSerie(0);
-      if(this.showCrude)
-    this.chart.addSerie({
-      yAxis:0,
-      name: 'Crude',
-      data: this.filteredData.crudeData
-    });
-    if(this.showPetrol || this.showDiesel){
+    if (this.showCrude)
+      this.chart.addSerie({
+        yAxis: 0,
+        name: 'Crude',
+        data: this.filteredData.crudeData
+      });
+    if (this.showPetrol || this.showDiesel) {
       this.handleCity('Mumbai');
       this.handleCity('Chennai');
       this.handleCity('Kolkata');
       this.handleCity('Delhi');
     }
-    
+
   }
-  getSerieIndex(name){
-    for(var i=0;i<this.chart.ref.series.length;i++){
-      if(this.chart.ref.series[i].name.toString().includes(name))
+  getSerieIndex(name) {
+    for (var i = 0; i < this.chart.ref.series.length; i++) {
+      if (this.chart.ref.series[i].name.toString().includes(name))
         return i;
     }
-    return -1; 
+    return -1;
   }
-  handleCrude(){
-    if(this.showCrude){
+  handleCrude() {
+    if (this.showCrude) {
       this.chart.addSerie({
-        yAxis:0,
+        yAxis: 0,
         name: 'Crude',
         data: this.filteredData.crudeData
       });
     }
-    else{
+    else {
       this.chart.removeSerie(this.getSerieIndex('Crude'));
     }
   }
-  handleFuel(fuelName){
+  handleFuel(fuelName) {
     console.log(fuelName);
-    if(this.showFuel[fuelName]){
+    if (this.showFuel[fuelName]) {
       this.handleCity('Kolkata');
       this.handleCity('Delhi');
       this.handleCity('Chennai');
       this.handleCity('Mumbai');
     }
-    else{
-      while(this.getSerieIndex(fuelName)!=-1)
-        { console.log(this.chart.ref.series[this.getSerieIndex(fuelName)]);
-          this.chart.removeSerie(this.getSerieIndex(fuelName));}
+    else {
+      while (this.getSerieIndex(fuelName) != -1) {
+        console.log(this.chart.ref.series[this.getSerieIndex(fuelName)]);
+        this.chart.removeSerie(this.getSerieIndex(fuelName));
+      }
     }
   }
-  handleCity(cityName:string){
+  handleCity(cityName: string) {
     console.log(cityName);
-    if(this.showCity[cityName]){
-      if(this.showFuel['Petrol']){
-        console.log('petrol'+cityName)
+    if (this.showCity[cityName]) {
+      if (this.showFuel['Petrol']) {
+        console.log('petrol' + cityName)
         this.chart.addSerie({
-          yAxis:0,
-          name:'Petrol '+cityName,
+          yAxis: 0,
+          name: 'Petrol ' + cityName,
           data: this.filteredData.petrolData[(cityName.toLowerCase())]
         })
       }
-      if(this.showFuel['Diesel']){
+      if (this.showFuel['Diesel']) {
         this.chart.addSerie({
-          yAxis:0,
-          name:'Diesel '+cityName,
+          yAxis: 0,
+          name: 'Diesel ' + cityName,
           data: this.filteredData.dieselData[(cityName.toLowerCase())]
         })
       }
     }
-    else{
-      while(this.getSerieIndex(cityName)!=-1){
+    else {
+      while (this.getSerieIndex(cityName) != -1) {
         this.chart.removeSerie(this.getSerieIndex(cityName));
       }
     }
@@ -209,14 +213,14 @@ export class AppComponent implements OnInit {
     );
     this.getDataService.getPetrol().subscribe(
       (data: PetrolData) => {
-        this.petrolData=data;
+        this.petrolData = data;
         console.log('petrol');
         this.applyFilters();
       }
     );
     this.getDataService.getDiesel().subscribe(
       (data: DieselData) => {
-        this.dieselData=data;
+        this.dieselData = data;
         console.log('diesel');
         this.applyFilters();
       }
@@ -234,13 +238,13 @@ class OilData {
 }
 class PetrolData {
   public chennai: any;
-  public mumbai:any;
-  public delhi:any;
-  public kolkata:any;
+  public mumbai: any;
+  public delhi: any;
+  public kolkata: any;
 }
 class DieselData {
   public chennai: any;
-  public mumbai:any;
-  public delhi:any;
-  public kolkata:any;
+  public mumbai: any;
+  public delhi: any;
+  public kolkata: any;
 }
